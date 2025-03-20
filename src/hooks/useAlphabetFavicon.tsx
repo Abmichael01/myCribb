@@ -1,34 +1,33 @@
 import { useEffect } from "react";
 
-const useAlphabetFavicon = (letter: string, bgColor = "#000", textColor = "#fff") => {
+const useAlphabetFavicon = (letter: string, bgColor = "#8e44ad", textColor = "#fff") => {
   useEffect(() => {
     if (!letter) return;
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    const size = 64;
+    const size = 64; // Favicon size
 
     canvas.width = size;
     canvas.height = size;
 
     if (ctx) {
-      // Background color
+      // Draw circular background
       ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, size, size);
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Text settings
+      // Draw text in the center with padding
       ctx.fillStyle = textColor;
-      ctx.font = "bold 48px Arial";
+      ctx.font = `bold 36px "Pacifico", cursive`; // Adjust font size for padding
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Draw letter in the center
-      ctx.fillText(letter.toUpperCase(), size / 2, size / 2);
+      ctx.fillText(letter.toUpperCase(), size / 2, size / 2 + 2); // Adjust text position slightly
 
-      // Convert canvas to data URL
+      // Convert canvas to a data URL and set as favicon
       const faviconUrl = canvas.toDataURL("image/png");
-
-      // Set the favicon
       let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
       if (!link) {
         link = document.createElement("link");
